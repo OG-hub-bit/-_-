@@ -1,19 +1,17 @@
-Калькулятор дробей
+Калькулятор дробей Хрущев Андрей ПМ20-6
 
 №1 Иморт  Модулей
 
 import math
-import numbers
-import operator
 
 №2 Класс для дробей
 
 class Fraction(numbers.Rational):
     __slots__ = ('_numerator', '_denominator')
 
-    # We're immutable, so use __new__ not __init__
+    #new__ not __init__
     def __new__(cls, numerator=0, denominator=None, *, _normalize=True):
-        """Constructs a Fraction"""
+        """создает дробь"""
         self = super(Fraction, cls).__new__(cls)
 
         if denominator is None:
@@ -113,9 +111,7 @@ class Fraction(numbers.Rational):
         return cls(*dec.as_integer_ratio())
 
     def as_integer_ratio(self):
-        """Return the integer ratio as a tuple.
-        Return a tuple of two integers, whose ratio is equal to the
-        Fraction and with a positive denominator.
+        """вернуть кортеж в виде дроби
         """
         return (self._numerator, self._denominator)
 
@@ -243,9 +239,9 @@ class Fraction(numbers.Rational):
 
     def __pow__(a, b):
         """a ** b
-        If b is not an integer, the result will be a float or complex
-        since roots are generally irrational. If b is an integer, the
-        result will be rational.
+       Если b не является целым числом, результатом будет число с плавающей запятой или комплексное число.
+        поскольку корни вообще иррациональны. Если b - целое число,
+        результат будет рациональным.
         """
         if isinstance(b, numbers.Rational):
             if b.denominator == 1:
@@ -272,7 +268,7 @@ class Fraction(numbers.Rational):
     def __rpow__(b, a):
         """a ** b"""
         if b._denominator == 1 and b._numerator >= 0:
-            # If a is an int, keep it that way if possible.
+            #если а целое пусть останется таким же
             return a ** b._numerator
 
         if isinstance(a, numbers.Rational):
@@ -284,7 +280,7 @@ class Fraction(numbers.Rational):
         return a ** float(b)
 
     def __pos__(a):
-        """+a: Coerces a subclass instance to Fraction"""
+        """+a: переводит а в дробь"""
         return Fraction(a._numerator, a._denominator, _normalize=False)
 
     def __neg__(a):
@@ -311,9 +307,7 @@ class Fraction(numbers.Rational):
         return -(-a.numerator // a.denominator)
 
     def __round__(self, ndigits=None):
-        """round(self, ndigits)
-        Rounds half toward even.
-        """
+        """округляет"""
         if ndigits is None:
             floor, remainder = divmod(self.numerator, self.denominator)
             if remainder * 2 < self.denominator:
@@ -351,18 +345,18 @@ class Fraction(numbers.Rational):
             b = b.real
         if isinstance(b, float):
             if math.isnan(b) or math.isinf(b):
-                # comparisons with an infinity or nan should behave in
-                # the same way for any finite a, so treat a as zero.
+                # сравнение с бесконечностью
+                # так же для любого а представляйте как 0
                 return 0.0 == b
             else:
                 return a == a.from_float(b)
         else:
-            # Since a doesn't know how to compare with b, let's give b
-            # a chance to compare itself with a.
+            #так как а не сравнимо с б
+            # сравнение с а
             return NotImplemented
 
     def _richcmp(self, other, op):
-        # convert other to a Rational instance where reasonable.
+        # если можно преобразовать в дроби
         if isinstance(other, numbers.Rational):
             return op(self._numerator * other.denominator,
                       self._denominator * other.numerator)
@@ -392,11 +386,8 @@ class Fraction(numbers.Rational):
 
     def __bool__(a):
         """a != 0"""
-        # bpo-39274: Use bool() because (a._numerator != 0) can return an
-        # object which is not a bool.
+        # обьект не является логическим значением
         return bool(a._numerator)
-
-    # support for pickling, copy, and deepcopy
 
     def __reduce__(self):
         return (self.__class__, (str(self),))
