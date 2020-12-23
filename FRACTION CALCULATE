@@ -25,12 +25,12 @@ class Fraction(numbers.Rational):
                 return self
 
             elif isinstance(numerator, float):
-                # Exact conversion
+                # точное преобразование
                 self._numerator, self._denominator = numerator.as_integer_ratio()
                 return self
 
             elif isinstance(numerator, str):
-                # Handle construction from strings.
+                # конструкция из строк
                 m = _RATIONAL_FORMAT.match(numerator)
                 if m is None:
                     raise ValueError('Invalid literal for Fraction: %r' %
@@ -61,7 +61,7 @@ class Fraction(numbers.Rational):
                                 "or a Rational instance")
 
         elif type(numerator) is int is type(denominator):
-            pass # *very* normal case
+            pass 
 
         elif (isinstance(numerator, numbers.Rational) and
             isinstance(denominator, numbers.Rational)):
