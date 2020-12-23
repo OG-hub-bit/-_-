@@ -9,7 +9,6 @@ import math
 class Fraction(numbers.Rational):
     __slots__ = ('_numerator', '_denominator')
 
-    #new__ not __init__
     def __new__(cls, numerator=0, denominator=None, *, _normalize=True):
         """создает дробь"""
         self = super(Fraction, cls).__new__(cls)
@@ -100,7 +99,7 @@ class Fraction(numbers.Rational):
 
     @classmethod
     def from_decimal(cls, dec):
-        """Converts a finite Decimal instance to a rational number, exactly."""
+        """преобразует в рациональное число"""
         from decimal import Decimal
         if isinstance(dec, numbers.Integral):
             dec = Decimal(int(dec))
